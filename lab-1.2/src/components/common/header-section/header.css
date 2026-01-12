@@ -1,0 +1,24 @@
+header {
+    background-color: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: left;
+    
+    width: 100vw;
+    padding: 1rem 1rem;
+}
+
+header div {
+    display: flex;
+}
+
+header img {
+    width: auto;
+    height: 4rem;
+}
+
+header p {
+    text-align: center;
+}
