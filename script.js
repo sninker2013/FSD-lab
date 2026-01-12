@@ -1,15 +1,7 @@
-interface Department {
-	name: string;
-  	employees: Employee[];
-}
 
-interface Employee {
-	firstName: string;
-  	lastName?: string;
-}
 
  // Used AI to generate this array to remove tedium
-const departments: Department[] = [
+const departments = [
   {
     name: "Administration",
     employees: [
@@ -86,26 +78,22 @@ const departments: Department[] = [
   },
 ];
 
-if(typeof window !== "undefined") {
-	generateEmployees(departments);
-}
+document.addEventListener("DOMContentLoaded", function () {
+  generateEmployees(departments);
+  generateFooter();
+})
 
-function generateEmployees(departments: Department[]) {
+function generateEmployees(departments) {
   for(let i = 0; i < departments.length; i++) {
     const departmentsSection = document.getElementById("departments");
-    if (!departmentsSection){
-      return
-    }
-    const department = departments[i];
-    if (!department) {
-      return;
-    }
+    const department = departments[i].name;
     let departmentName = document.createElement("h2");
-    departmentName.textContent = department.name
-    let departmentEmployees = department.employees;
+    departmentName.textContent = department
+    let departmentEmployees = departments[i].employees;
 
     const departmentSection = document.createElement("section")
-    departmentSection.id = `${departmentName}`
+    departmentSection.id = `${department}`
+    departmentsSection.appendChild(departmentSection);
 
     departmentSection.appendChild(departmentName);
 
@@ -113,7 +101,15 @@ function generateEmployees(departments: Department[]) {
       const employeeNode = document.createElement("p");
       employeeNode.textContent = `${departmentEmployees[i].firstName} ${departmentEmployees[i].lastName}`;
       departmentSection.appendChild(employeeNode);
-    }
+   }
+  }
+}
 
-	}
+function generateFooter() {
+  const footerPara = document.createElement("p");
+  year = new Date().getFullYear();
+  footerPara.textContent = `Copyright Pixell River Financial ${year}`;
+
+  const footer = document.getElementById("footer");
+  footer.appendChild(footerPara);
 }
