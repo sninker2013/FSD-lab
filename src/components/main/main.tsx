@@ -1,16 +1,16 @@
 import "./main.css"
 
-interface Department {
+export interface Department {
 	name: string;
   	employees: Employee[];
 }
 
-interface Employee {
+export interface Employee {
 	firstName: string;
   	lastName?: string;
 }
 
-const departments: Department[] = [
+export let departmentData: Department[] = [
   {
     name: "Administration",
     employees: [
@@ -88,11 +88,16 @@ const departments: Department[] = [
 ];
 
 
-export function main() {
+export function main({
+    departments,
+}:{
+    departments: Department[],
+}) {
     return (
         <>
             <main>
-                <Employees departments={departments}/>
+                <Employees departments={departments
+                }/>
             </main>
         </>
     );
