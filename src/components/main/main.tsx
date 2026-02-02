@@ -87,23 +87,7 @@ export let departmentData: Department[] = [
   },
 ];
 
-
-export function main({
-    departments,
-}:{
-    departments: Department[],
-}) {
-    return (
-        <>
-            <main>
-                <Employees departments={departments
-                }/>
-            </main>
-        </>
-    );
-}
-
-function Employees({departments}: {departments: Department[]}) {
+export function Employees({departments}: {departments: Department[]}) {
     const departmentsList: React.JSX.Element[] = [];
 
 
@@ -147,5 +131,3 @@ function EmployeeList({employee}: {employee: Employee}) {
         </li>
     )
 }
-
-export default main;
