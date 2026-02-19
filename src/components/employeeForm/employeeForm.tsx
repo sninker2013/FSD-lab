@@ -1,4 +1,4 @@
-import type { Department, Employee } from "../main/main";
+import type { Department } from "../main/main";
 import { useFormInput } from "../hooks/useFormInput";
 
 function Form({
@@ -20,26 +20,24 @@ function Form({
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        const { isValid, errors } = tryForm();
-        if (!isValid) {
+        const { employee, errors } = tryForm();
+        if (employee == undefined) {
             updateErrors(errors);
             return;
-        }
-        
-        
-        let newEmployee:Employee = {firstName, lastName}
-        updateDepartments(oldDepartmentState => {
-            return oldDepartmentState.map(d => {
-                if(d.name === department) {
-                    return {
-                        ...d, employees: [...d.employees, newEmployee]
+        } else {
+            updateDepartments(oldDepartmentState => {
+                return oldDepartmentState.map(d => {
+                    if(d.name === department) {
+                        return {
+                            ...d, employees: [...d.employees, employee]
+                        }
+                    } else {
+                        return d;
                     }
-                } else {
-                    return d;
-                }
-            })
-        });
-        resetForm();
+                })
+            });
+            resetForm();
+        }
     }
 
     return (
