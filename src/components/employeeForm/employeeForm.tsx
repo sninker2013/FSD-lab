@@ -1,31 +1,32 @@
-import { type FormEvent, useRef, useState } from "react";
 import type { Department, Employee } from "../main/main";
+import { useFormInput } from "../hooks/useFormInput";
 
 function Form({
     departments,
-    updateDepartments,
-}:{
+    updateDepartments
+}: {
     departments: Department[],
     updateDepartments: React.Dispatch<React.SetStateAction<Department[]>>
 }) {
-    let firstNameRef = useRef<HTMLInputElement>(null);
-    let lastNameRef = useRef<HTMLInputElement>(null);
-    let departmentRef = useRef<HTMLSelectElement>(null);
-    const [error, setError] = useState<string>("");
 
-    const handleSubmit = (event: FormEvent) => {
+    const { firstName, updateFirstName, 
+        lastName, updateLastName, 
+        department, updateDepartment,
+        errors, updateErrors,
+        tryForm,
+        resetForm
+    } = useFormInput({departments, updateDepartments});
+
+    const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        const firstName = firstNameRef.current?.value || "";
-        const lastName = lastNameRef.current?.value || "";
-        const department = departmentRef.current?.value || "";
-
-        if (firstName.length < 3) {
-            setError("First name must be at least 3 characters long");
+        const { isValid, errors } = tryForm();
+        if (!isValid) {
+            updateErrors(errors);
             return;
         }
-        setError("");
-
+        
+        
         let newEmployee:Employee = {firstName, lastName}
         updateDepartments(oldDepartmentState => {
             return oldDepartmentState.map(d => {
@@ -38,23 +39,27 @@ function Form({
                 }
             })
         });
-
+        resetForm();
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <p>{error}</p>
+            <ul className="errors">
+                {errors.map((error, i) => <li key={i}>{error}</li>)}
+            </ul>
             <label>First Name: </label>
             <input
-                ref={firstNameRef}
-                required
+                value={firstName}
+                onChange={(e) => updateFirstName(e.target.value)}
             />
             <label>Last Name:</label>
             <input
-                ref={lastNameRef}
+                value={lastName}
+                onChange={(e) => updateLastName(e.target.value)}
             />
             <label>Department:</label>
-            <select ref={departmentRef} name="department">
+            <select value={department} onChange={(e) => updateDepartment(e.target.value)} name="department">
+                <option value="">Select a Department</option>
                 <option value="Administration">Administration</option>
                 <option value="Audit">Audit</option>
                 <option value="Banking Operations">Banking Operations</option>
