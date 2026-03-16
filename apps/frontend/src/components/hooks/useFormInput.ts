@@ -1,5 +1,6 @@
 import { useState } from "react";
-import type { Department, Employee } from "../main/main";
+import type { Department } from "@shared/types/department";
+import type { Employee } from "@shared/types/employee";
 import * as employeeService from "../services/employeeService"
 import * as employeeRepo from "../apis/employeeRepo"
 
@@ -13,18 +14,17 @@ export function useFormInput({
     const [firstName, updateFirstName] = useState<string>("")
     const [lastName, updateLastName] = useState<string>("")
     const [department, updateDepartment] = useState<string>("")
-    const [errors, updateErrors] = useState<String[]>([])
+    const [errors, updateErrors] = useState<string[]>([])
 
-    function tryForm (): {employee?: Employee, errors: string[]} {
-        const { isValid, errors} = employeeService.validateForm(firstName, department)
+    async function tryForm (): Promise<{employee?: Employee, errors: string[]}> {
+        const { isValid, errors } = await employeeService.validateForm(firstName, department)
         let employee
         if (isValid) {
-            employee = employeeRepo.createEmployee(firstName, lastName)
-            return {employee, errors}
+            employee = await employeeRepo.createEmployee(firstName, lastName)
+            return { employee, errors }
         } else {
-            return {errors}
+            return { errors }
         }
-        
     }
 
     const resetForm = () => {
