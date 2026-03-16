@@ -1,14 +1,15 @@
-import { departmentData } from "../main/main";
+import { getAllDepartments } from "../apis/departmentRepo";
 
-export function validateForm(
+export async function validateForm(
     firstName: string,
     department: string
-    ): {
-        isValid: boolean;
-        errors: string[];
-    } {
+    ): Promise<{
+    isValid: boolean;
+    errors: string[];
+}> {
         let isValid = true;
         const errors: string[] = [];
+        const departmentData = await getAllDepartments();
 
         if (firstName.length < 3) {
             errors.push("First name must be at least 3 characters")

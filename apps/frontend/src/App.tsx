@@ -1,17 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route } from "react-router-dom"
 
 import './App.css';
-import { departmentData, Employees } from "./components/main/main";
+import { Employees } from "./components/main/main";
+import { getAllDepartments } from "./components/apis/departmentRepo";
 import Form from './components/employeeForm/employeeForm';
 import { Layout } from './components/common/layout';
 
 
-import type { Department } from './components/main/main';
+import type { Department } from '../../../shared/types/department';
 import { Organization } from './components/organization-page/organization';
 
 function App() {
-    const [departments, updateDepartments] = useState<Department[]>(departmentData);
+    const [departments, updateDepartments] = useState<Department[]>([]);
+
+    useEffect(() => {
+        (async () => {
+          const departmentData = await getAllDepartments();
+          updateDepartments(departmentData);
+        })();
+      }, []);
+      
   return (
     <Routes>
       <Route path="/" element={<Layout/>}>
