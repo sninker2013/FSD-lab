@@ -7,10 +7,10 @@ import { getAllDepartments } from "./components/apis/departmentRepo";
 import Form from './components/employeeForm/employeeForm';
 import { Layout } from './components/common/layout';
 
-
 import type { Department } from '../../../shared/types/department';
 import { Organization } from './components/organization-page/organization';
 
+import { Show } from '@clerk/react'
 function App() {
     const [departments, updateDepartments] = useState<Department[]>([]);
 
@@ -29,10 +29,12 @@ function App() {
       <Employees 
       departments={departments}
       />
+      <Show when="signed-in">
       <Form 
       departments={departments}
       updateDepartments={updateDepartments}
       />
+      </Show>
         </>}/>
       </Route>
     </Routes>

@@ -2,7 +2,7 @@ import Form from "./organizationForm";
 import type { Role } from "../apis/orgData";
 import * as RoleService from "../services/organizationService";
 import { useEffect, useState } from "react";
-
+import { Show } from "@clerk/react";
 import "./organization.css"
 
 export function Organization() {
@@ -27,10 +27,12 @@ export function Organization() {
     return (
         <>
             {rolesList}
-            <Form 
-              roles={roles}
-              updateRoles={updateRoles}
-      />
+            <Show when="signed-in">
+                <Form 
+                roles={roles}
+                updateRoles={updateRoles}
+                />
+            </Show>
         </>
     )
 }
