@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Department } from "@shared/types/department";
 import * as departmentService from "../services/departmentService";
-import { successResponse } from "../models/responseModel";
 
 export const getAllDepartments = async(
     _req: Request,
@@ -10,7 +9,17 @@ export const getAllDepartments = async(
 ): Promise<void> => {
     try {
         const departments: Department[] = await departmentService.getAllDepartments();
-        res.status(200).json(successResponse(departments, "Departments fetched successfully"));
+        const pageCount = Math.ceil(departments.length / 10);
+        let page = parseInt((_req.query.page as string) || '1');
+        if (!page) { page = 1;}
+        if (page > pageCount) {
+            page = pageCount
+        }
+        res.status(200).json({
+    "page": page,
+    "pageCount": pageCount,
+    "departments": departments.slice(page * 10 - 10, page * 10)
+  });
     } catch (error) {
         next(error);
     }
