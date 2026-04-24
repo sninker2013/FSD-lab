@@ -5,15 +5,17 @@
     "compilerOptions": {
       "target": "ES6",
       "module": "commonjs",
-      "outDir": "./dist",
-      "baseUrl": "./",
       "sourceMap": true,
       "lib": ["ESNext"],
       "paths": {
         "@shared/*": ["../../shared/*"],
-        "*": ["*"]
-      }
+        "*": ["./*"]
+      },
+      "types": ["node"]
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "prisma/**/*"],
+      "ts-node": {
+    "transpileOnly": true
+  },
     "exclude": ["node_modules", "dist"]
 }
